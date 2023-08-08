@@ -16,9 +16,7 @@ const { SERVER_PORT, DB } = require('./utils/config');
 
 app.use(cors);
 
-
 mongoose.connect(DB);
-
 
 app.use(bodyParser.json());
 app.use(cookieParser());
