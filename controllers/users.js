@@ -3,9 +3,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
-const UnauthorizedError = require('../errors/unauthorized-err');
-const ConflictingRequestError = require('../errors/conflicting-request-err');
-const BadRequestError = require('../errors/bad-request-err');
+const {
+  unauthorizedError,
+  badRequestCreateUserError,
+  conflictingRequestError,
+  badRequestDefaultError,
+} = require('../utils/constants');
 
 const SALT_ROUNDS = 10;
 const { SECRET_STRING } = require('../utils/config');
@@ -20,12 +23,12 @@ const signin = (req, res, next) => {
   User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        throw new UnauthorizedError('Неверный имя пользователя или пароль');
+        throw unauthorizedError;
       }
       bcrypt.compare(password, user.password)
         .then((isValidPassword) => {
           if (!isValidPassword) {
-            throw new UnauthorizedError('Неверный имя пользователя или пароль');
+            throw unauthorizedError;
           } else {
             const token = jwt.sign({ id: user._id }, SECRET_STRING);
             res
@@ -59,9 +62,9 @@ const createUser = (req, res, next) => {
       })
       .catch((err) => {
         if (err.name === 'ValidationError') {
-          next(new BadRequestError('Некорректые данные имени пользователя, почты или пороля'));
+          next(badRequestCreateUserError);
         } else if (err.code === 11000) {
-          next(new ConflictingRequestError('Пользователь с таким Email уже зарегестрирован'));
+          next(conflictingRequestError);
         } else {
           next(err);
         }
@@ -93,7 +96,9 @@ const changeProfileData = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Введены некорректые данные'));
+        next(badRequestDefaultError);
+      } else if (err.code === 11000) {
+        next(conflictingRequestError);
       } else {
         next(err);
       }

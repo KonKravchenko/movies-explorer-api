@@ -1,7 +1,10 @@
 const Movie = require('../models/movie');
-const ForbidenError = require('../errors/forbiden-err');
-const NotFoundError = require('../errors/not-found-err');
-const BadRequestError = require('../errors/bad-request-err');
+
+const {
+  badRequestCreateMovieError,
+  notFoundMovieError,
+  forbidenMovieError,
+} = require('../utils/constants');
 
 module.exports.createMovie = (req, res, next) => {
   const {
@@ -39,7 +42,7 @@ module.exports.createMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Некорректые данные при создании карточки'));
+        next(badRequestCreateMovieError);
       } else {
         next(err);
       }
@@ -61,7 +64,7 @@ module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(movieId)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError('Фильм не найден');
+        throw notFoundMovieError;
       } else if (movie.owner.toString() === userId) {
         Movie.findByIdAndRemove(movieId)
           .then((data) => {
@@ -71,7 +74,7 @@ module.exports.deleteMovie = (req, res, next) => {
           })
           .catch(next);
       } else {
-        throw new ForbidenError('У вас нет прав на удаление данного фильма');
+        throw forbidenMovieError;
       }
     })
     .catch(next);
