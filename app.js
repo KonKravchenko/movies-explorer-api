@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 
 const { errors } = require('celebrate');
 
@@ -21,6 +22,7 @@ mongoose.connect(DB);
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(helmet());
 
 app.use(limiter);
 
