@@ -8,13 +8,14 @@ const {
   badRequestCreateUserError,
   conflictingRequestError,
   badRequestDefaultError,
+  signoutMessageText,
 } = require('../utils/constants');
 
 const SALT_ROUNDS = 10;
 const { SECRET_STRING } = require('../utils/config');
 
 const signout = (req, res, next) => {
-  res.clearCookie('jwt').send({ message: 'Выход' });
+  res.clearCookie('jwt').send({ message: signoutMessageText });
 };
 
 const signin = (req, res, next) => {

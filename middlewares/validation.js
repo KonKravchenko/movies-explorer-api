@@ -1,15 +1,20 @@
 const { isURL, isEmail } = require('validator');
 const { celebrate, Joi } = require('celebrate');
-const { linkValid, enValid } = require('../utils/constants');
+const {
+  linkValid,
+  enValid,
+  urlErrorText,
+  emailErrorText,
+} = require('../utils/constants');
 
 module.exports.validationUrl = {
   validator: (v) => isURL(v),
-  message: 'Неправильный формат ссылки на постер к фильму',
+  message: urlErrorText,
 };
 
 module.exports.validationEmail = {
   validator: (v) => isEmail(v),
-  message: 'Неправильный формат почты',
+  message: emailErrorText,
 };
 
 module.exports.validationChangeProfileData = celebrate({

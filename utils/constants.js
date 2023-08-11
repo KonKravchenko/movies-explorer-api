@@ -16,12 +16,30 @@ const badRequestError = (item) => new BadRequestError(item);
 const forbidenError = (item) => new ForbidenError(item);
 const notFoundError = (item) => new NotFoundError(item);
 
+// текст сообщений
+module.exports.urlErrorText = 'Неправильный формат ссылки на постер к фильму';
+module.exports.emailErrorText = 'Неправильный формат почты';
+module.exports.rateLimitErrorText = { message: 'Превышен лимит запросов. Попробуйте еще раз позже.' };
+module.exports.serverErrorText = 'На сервере произошла ошибка';
+module.exports.deleteMovieMessage = 'Фильм удалён';
+module.exports.signoutMessageText = 'Выход';
+const authErrorText = 'Необходима авторизация';
+const userNamePassErrorText = 'Неверный имя пользователя или пароль';
+const badRequestCreateUserErrorText = 'Некорректные имя пользователя, почты или пороля';
+const conflictingRequestErrorText = 'Пользователь с таким Email уже зарегестрирован';
+const badRequestDefaultErrorText = 'Введены некорректые данные';
+const badRequestCreateMovieErrorText = 'Некорректые данные при создании карточки';
+const notFoundMovieErrorText = 'Фильм не найден';
+const forbidenMovieErrorText = 'У вас нет прав на удаление данного фильма';
+const notFoundPathErrorText = 'Неверный путь';
+
 // Экспортируемые ошибки с сообщением
-module.exports.unauthorizedError = unauthorizedError('Неверный имя пользователя или пароль');
-module.exports.badRequestCreateUserError = badRequestError('Некорректные имя пользователя, почты или пороля');
-module.exports.conflictingRequestError = conflictingRequestError('Пользователь с таким Email уже зарегестрирован');
-module.exports.badRequestDefaultError = badRequestError('Введены некорректые данные');
-module.exports.badRequestCreateMovieError = badRequestError('Некорректые данные при создании карточки');
-module.exports.notFoundMovieError = notFoundError('Фильм не найден');
-module.exports.forbidenMovieError = forbidenError('У вас нет прав на удаление данного фильма');
-module.exports.notFoundPathError = notFoundError('Неверный путь');
+module.exports.unauthorizedError = unauthorizedError(userNamePassErrorText);
+module.exports.authTokenError = unauthorizedError(authErrorText);
+module.exports.badRequestCreateUserError = badRequestError(badRequestCreateUserErrorText);
+module.exports.conflictingRequestError = conflictingRequestError(conflictingRequestErrorText);
+module.exports.badRequestDefaultError = badRequestError(badRequestDefaultErrorText);
+module.exports.badRequestCreateMovieError = badRequestError(badRequestCreateMovieErrorText);
+module.exports.notFoundMovieError = notFoundError(notFoundMovieErrorText);
+module.exports.forbidenMovieError = forbidenError(forbidenMovieErrorText);
+module.exports.notFoundPathError = notFoundError(notFoundPathErrorText);

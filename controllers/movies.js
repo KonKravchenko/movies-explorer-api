@@ -4,6 +4,7 @@ const {
   badRequestCreateMovieError,
   notFoundMovieError,
   forbidenMovieError,
+  deleteMovieMessage,
 } = require('../utils/constants');
 
 module.exports.createMovie = (req, res, next) => {
@@ -35,10 +36,10 @@ module.exports.createMovie = (req, res, next) => {
     movieId,
     owner,
   })
-    .then((card) => {
+    .then((movie) => {
       res
         .status(201)
-        .send(card);
+        .send(movie);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -50,10 +51,11 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  const { id } = req.user;
+  Movie.find({ owner: id })
     .populate('owner')
-    .then((movie) => {
-      res.send({ movie });
+    .then((movies) => {
+      res.send(movies);
     })
     .catch(next);
 };
@@ -70,7 +72,7 @@ module.exports.deleteMovie = (req, res, next) => {
           .then((data) => {
             res
               .status(200)
-              .send({ data, message: 'Фильм удалён' });
+              .send({ data, message: deleteMovieMessage });
           })
           .catch(next);
       } else {
