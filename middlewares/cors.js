@@ -10,6 +10,7 @@ const allowedCors = [
   'http://localhost:3000/sign-in',
   'http://localhost:3000/sign-up',
   'http://localhost:3000/main',
+  'https://konkravchenko.movies.nomoreparties.co',
 ];
 
 module.exports = (req, res, next) => {
