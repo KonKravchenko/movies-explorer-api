@@ -32,11 +32,11 @@ module.exports.validationCreateMovieData = celebrate({
     year: Joi.string().required(),
     description: Joi.string().required(),
     image: Joi.string().required().pattern(linkValid),
-    trailer: Joi.string().required().pattern(linkValid),
+    trailerLink: Joi.string().required().pattern(linkValid),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required().pattern(enValid),
     thumbnail: Joi.string().required().pattern(linkValid),
-    movieId: Joi.string().required(),
+    movieId: Joi.number().required(),
   }),
 });
 
